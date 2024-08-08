@@ -1,8 +1,9 @@
 package com.accenture.academico.model;
 
+import com.accenture.academico.model.enums.TipoConta;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Data
@@ -12,13 +13,18 @@ public class ContaBancaria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id_conta_bancaria")
+    private Integer idContaBancaria;
 
     @Column(length = 45, nullable = false)
     private String numero;
 
     @Column(precision = 11, scale = 2, nullable = false)
     private BigDecimal saldo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_conta", length = 15, nullable = false)
+    private TipoConta tipoConta;
 
     @OneToOne
     @JoinColumn(name = "id_agencia", nullable = false)
@@ -27,4 +33,5 @@ public class ContaBancaria {
     @OneToOne
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
+
 }

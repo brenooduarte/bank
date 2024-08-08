@@ -10,7 +10,8 @@ public class Transferencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id_transferencia")
+    private Integer idTransferencia;
 
     @OneToOne
     @JoinColumn(name = "id_operacao")
