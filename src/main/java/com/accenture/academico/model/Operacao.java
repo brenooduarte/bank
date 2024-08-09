@@ -1,8 +1,7 @@
 package com.accenture.academico.model;
 
-import jakarta.persistence.*;
-
 import com.accenture.academico.model.enums.TipoOperacao;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -32,4 +31,12 @@ public class Operacao {
     @JoinColumn(name = "id_conta_origem", nullable = false)
     private ContaBancaria contaOrigem;
 
+    public Operacao(TipoOperacao tipoOperacao, BigDecimal taxaOperacao, ContaBancaria contaOrigem) {
+        this.dataHoraMovimento = LocalDateTime.now();
+        this.tipoOperacao = tipoOperacao;
+        this.taxaOperacao = taxaOperacao;
+        this.contaOrigem = contaOrigem;
+    }
+
+    public Operacao() {}
 }

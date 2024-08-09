@@ -1,6 +1,6 @@
 package com.accenture.academico.controller;
 
-import com.accenture.academico.model.dto.TransferenciaDTO;
+import com.accenture.academico.model.dto.form.TransferenciaDTO;
 import com.accenture.academico.service.ContaBancariaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/contas")
+@RequestMapping("bank/contas")
 public class ContaBancariaController {
 
     @Autowired
-    private ContaBancariaService contaBancariaService;
+    ContaBancariaService contaBancariaService;
 
     @Operation(summary = "Realiza um depósito em uma conta bancária")
     @ApiResponses(value = {

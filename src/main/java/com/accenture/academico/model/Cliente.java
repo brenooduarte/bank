@@ -1,5 +1,7 @@
 package com.accenture.academico.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,16 +26,25 @@ public class Cliente {
     @Column(length = 20, nullable = false)
     private String telefone;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tb_cliente_agencia",
-            joinColumns = @JoinColumn(name = "id_cliente"),
-            inverseJoinColumns = @JoinColumn(name = "id_agencia")
-    )
-    private List<Agencia> agencias;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "tb_cliente_agencia",
+//            joinColumns = @JoinColumn(name = "id_cliente"),
+//            inverseJoinColumns = @JoinColumn(name = "id_agencia")
+//    )
+//    private List<Agencia> agencias;
+
+    @ManyToOne
+    @JoinColumn(name = "id_agencia", nullable = false)
+    @JsonBackReference
+    private Agencia agencia;
 
     @OneToOne
     @JoinColumn(name = "id_endereco", nullable = false)
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ContaBancaria> contaBancarias;
 
 }

@@ -2,10 +2,12 @@ package com.accenture.academico.service;
 
 import com.accenture.academico.model.ContaBancaria;
 import com.accenture.academico.model.Operacao;
-import com.accenture.academico.model.dto.TransferenciaDTO;
-import com.accenture.academico.repository.ClienteRepository;
+import com.accenture.academico.model.Transferencia;
+import com.accenture.academico.model.dto.form.TransferenciaDTO;
+import com.accenture.academico.model.enums.TipoOperacao;
 import com.accenture.academico.repository.ContaBancariaRepository;
 import com.accenture.academico.repository.OperacaoRepository;
+import com.accenture.academico.repository.TransferenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,13 @@ import java.util.Optional;
 public class ContaBancariaService {
 
     @Autowired
-    private ContaBancariaRepository contaBancariaRepository;
+    ContaBancariaRepository contaBancariaRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    OperacaoRepository operacaoRepository;
 
     @Autowired
-    private OperacaoRepository operacaoRepository;
+    TransferenciaRepository transferenciaRepository;
 
     public Optional<ContaBancaria> buscarContaPorId(Integer id) {
         return contaBancariaRepository.findById(id);
@@ -41,12 +43,7 @@ public class ContaBancariaService {
         conta.setSaldo(conta.getSaldo().add(valor));
         contaBancariaRepository.save(conta);
 
-        // Logar a operação
-        Operacao operacao = new Operacao();
-        operacao.setDataHoraMovimento(java.time.LocalDateTime.now());
-        operacao.setTipoOperacao(com.accenture.academico.model.enums.TipoOperacao.DEPOSITO);
-        operacao.setTaxaOperacao(BigDecimal.ZERO); // Defina a taxa conforme necessário
-        operacao.setContaOrigem(conta);
+        Operacao operacao = new Operacao(TipoOperacao.DEPOSITO, BigDecimal.ZERO, conta);
         operacaoRepository.save(operacao);
     }
 
@@ -59,12 +56,7 @@ public class ContaBancariaService {
         conta.setSaldo(conta.getSaldo().subtract(valor));
         contaBancariaRepository.save(conta);
 
-        // Logar a operação
-        Operacao operacao = new Operacao();
-        operacao.setDataHoraMovimento(java.time.LocalDateTime.now());
-        operacao.setTipoOperacao(com.accenture.academico.model.enums.TipoOperacao.SAQUE);
-        operacao.setTaxaOperacao(BigDecimal.ZERO); // Defina a taxa conforme necessário
-        operacao.setContaOrigem(conta);
+        Operacao operacao = new Operacao(TipoOperacao.SAQUE, BigDecimal.ZERO, conta);
         operacaoRepository.save(operacao);
     }
 
@@ -84,25 +76,14 @@ public class ContaBancariaService {
         contaBancariaRepository.save(contaOrigem);
         contaBancariaRepository.save(contaDestino);
 
-        // Logar a operação na conta origem
-        Operacao operacaoOrigem = new Operacao();
-        operacaoOrigem.setDataHoraMovimento(java.time.LocalDateTime.now());
-        operacaoOrigem.setTipoOperacao(com.accenture.academico.model.enums.TipoOperacao.TRANSFERENCIA);
-        operacaoOrigem.setTaxaOperacao(BigDecimal.ZERO); // Defina a taxa conforme necessário
-        operacaoOrigem.setContaOrigem(contaOrigem);
-        operacaoRepository.save(operacaoOrigem);
+        Operacao operacao = new Operacao(TipoOperacao.TRANSFERENCIA, BigDecimal.ZERO, contaOrigem);
+        operacaoRepository.save(operacao);
 
-        // Logar a operação na conta destino
-        Operacao operacaoDestino = new Operacao();
-        operacaoDestino.setDataHoraMovimento(java.time.LocalDateTime.now());
-        operacaoDestino.setTipoOperacao(com.accenture.academico.model.enums.TipoOperacao.TRANSFERENCIA);
-        operacaoDestino.setTaxaOperacao(BigDecimal.ZERO); // Defina a taxa conforme necessário
-        operacaoDestino.setContaOrigem(contaDestino);
-        operacaoRepository.save(operacaoDestino);
+        Transferencia transferencia = new Transferencia(operacao, contaDestino);
+        transferenciaRepository.save(transferencia);
     }
 
     public List<ContaBancaria> buscarContasPorCliente(Integer clienteId) {
         return contaBancariaRepository.findByClienteId(clienteId);
-//        return List.of(new ContaBancaria());
     }
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 public class EnderecoService {
 
     @Autowired
-    private EnderecoRepository enderecoRepository;
+    EnderecoRepository enderecoRepository;
 
     public Optional<Endereco> buscarEnderecoPorId(Integer id) {
         return enderecoRepository.findById(id);

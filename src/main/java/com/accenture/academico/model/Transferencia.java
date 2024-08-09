@@ -21,4 +21,10 @@ public class Transferencia {
     @JoinColumn(name = "id_conta_destino")
     private ContaBancaria contaDestino;
 
+    public Transferencia(Operacao operacao, ContaBancaria contaDestino) {
+        this.operacao = operacao;
+        this.contaDestino = contaDestino;
+    }
+
+    public Transferencia() {}
 }

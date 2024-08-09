@@ -1,4 +1,4 @@
-package com.accenture.academico.model.dto;
+package com.accenture.academico.model.dto.form;
 
 import lombok.Data;
 

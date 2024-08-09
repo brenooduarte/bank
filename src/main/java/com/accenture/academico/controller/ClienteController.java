@@ -1,6 +1,7 @@
 package com.accenture.academico.controller;
 
 import com.accenture.academico.model.ContaBancaria;
+import com.accenture.academico.model.dto.view.SaldoDTO;
 import com.accenture.academico.service.ClienteService;
 import com.accenture.academico.service.ContaBancariaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,14 +18,14 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("bank/clientes")
 public class ClienteController {
 
     @Autowired
-    private ClienteService clienteService;
+    ClienteService clienteService;
 
     @Autowired
-    private ContaBancariaService contaBancariaService;
+    ContaBancariaService contaBancariaService;
 
     @Operation(summary = "Lista todas as contas bancárias de um cliente específico")
     @ApiResponses(value = {
@@ -55,8 +56,8 @@ public class ClienteController {
             @ApiResponse(responseCode = "404", description = "Conta bancária não encontrada")
     })
     @GetMapping("/contas/{id}/saldo")
-    public ResponseEntity<BigDecimal> consultarSaldo(@PathVariable Integer id) {
+    public ResponseEntity<SaldoDTO> consultarSaldo(@PathVariable Integer id) {
         BigDecimal saldo = contaBancariaService.consultarSaldo(id);
-        return ResponseEntity.ok(saldo);
+        return ResponseEntity.ok(new SaldoDTO(saldo));
     }
 }

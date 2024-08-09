@@ -11,11 +11,10 @@ import java.util.List;
 public class OperacaoService {
 
     @Autowired
-    private OperacaoRepository operacaoRepository;
+    OperacaoRepository operacaoRepository;
 
-    public List<Operacao> listarOperacoesPorConta(Integer contaId) {
-//        return operacaoRepository.findByContaOrigem(contaId);
-        return List.of(new Operacao());
+    public List<Operacao> listarExtratoPorConta(Integer contaId) {
+        return operacaoRepository.listarExtratoPorConta(contaId);
     }
 
 }

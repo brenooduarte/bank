@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/extratos")
+@RequestMapping("bank/extratos")
 public class OperacaoController {
 
     @Autowired
-    private OperacaoService operacaoService;
+    OperacaoService operacaoService;
 
     @Operation(summary = "Lista todo o extrato de uma conta bancária por ID")
     @ApiResponses(value = {
@@ -27,8 +27,8 @@ public class OperacaoController {
             @ApiResponse(responseCode = "404", description = "Conta bancária não encontrada")
     })
     @GetMapping("/contas/{id}")
-    public ResponseEntity<List<Operacao>> listarOperacoesPorConta(@PathVariable Integer id) {
-        List<Operacao> operacoes = operacaoService.listarOperacoesPorConta(id);
+    public ResponseEntity<List<Operacao>> listarExtratoPorConta(@PathVariable Integer id) {
+        List<Operacao> operacoes = operacaoService.listarExtratoPorConta(id);
         return ResponseEntity.ok(operacoes);
     }
 }

@@ -1,7 +1,6 @@
 package com.accenture.academico.service;
 
 import com.accenture.academico.model.Cliente;
-import com.accenture.academico.model.ContaBancaria;
 import com.accenture.academico.repository.ClienteRepository;
 import com.accenture.academico.repository.ContaBancariaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,10 @@ import java.util.Optional;
 public class ClienteService {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    ClienteRepository clienteRepository;
 
     @Autowired
-    private ContaBancariaRepository contaBancariaRepository;
+    ContaBancariaRepository contaBancariaRepository;
 
     public Cliente salvarCliente(Cliente cliente) {
         return clienteRepository.save(cliente);

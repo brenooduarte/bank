@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/enderecos")
+@RequestMapping("bank/enderecos")
 public class EnderecoController {
 
     @Autowired
-    private EnderecoService enderecoService;
+    EnderecoService enderecoService;
 
     @Operation(summary = "Busca um endereço por ID")
     @ApiResponses(value = {

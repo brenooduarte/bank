@@ -12,4 +12,6 @@ public interface ContaBancariaRepository extends JpaRepository<ContaBancaria, In
 
     List<ContaBancaria> findByClienteId(Integer clienteId);
     Optional<ContaBancaria> findById(Integer id);
+    List<ContaBancaria> findByCliente_Id(Integer clienteId);
+
 }
