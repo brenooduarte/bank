@@ -1,6 +1,5 @@
 package com.accenture.academico.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,9 +25,6 @@ public class Agencia {
 
     @Column(name = "taxa_juros", precision = 5, scale = 2, nullable = false)
     private BigDecimal taxaJuros;
-
-//    @ManyToMany(mappedBy = "agencias")
-//    private List<Cliente> clientes;
 
     @OneToMany(mappedBy = "agencia")
     @JsonManagedReference

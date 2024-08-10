@@ -11,6 +11,7 @@
 	<groupId>com.accenture.academico</groupId>
 	<artifactId>bank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>bank</name>
 	<url/>
 	<licenses>
@@ -19,6 +20,12 @@
 	<developers>
 		<developer/>
 	</developers>
+	<modules>
+		<module>Clientes</module>
+		<module>Contas-Bancarias</module>
+		<module>Operacoes-Bancarias</module>
+		<module>Agencias</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

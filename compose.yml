@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  agencias_db:
+    image: mysql:8.0
+    container_name: agencias_db
+    environment:
+      MYSQL_DATABASE: agencias_db
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - agencias_data:/var/lib/mysql
+
+  contas_db:
+    image: mysql:8.0
+    container_name: contas_db
+    environment:
+      MYSQL_DATABASE: contas_db
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - contas_data:/var/lib/mysql
+
+  operacoes_db:
+    image: mysql:8.0
+    container_name: operacoes_db
+    environment:
+      MYSQL_DATABASE: operacoes_db
+      MYSQL_PASSWORD: root
+    ports:
+      - "3308:3306"
+    volumes:
+      - operacoes_data:/var/lib/mysql
+
+  clientes_db:
+    image: mysql:8.0
+    container_name: clientes_db
+    environment:
+      MYSQL_DATABASE: clientes_db
+      MYSQL_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - clientes_data:/var/lib/mysql
+
+volumes:
+  agencias_data:
+  contas_data:
+  operacoes_data:
+  clientes_data:

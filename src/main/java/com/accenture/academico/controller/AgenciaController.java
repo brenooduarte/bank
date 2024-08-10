@@ -128,20 +128,20 @@ public class AgenciaController {
             Agencia agencia = agenciaRepository.findById(idAgencia)
                     .orElseThrow(() -> new RuntimeException("Agência não encontrada"));
 
-            Endereco endereco = dto.getEndereco();
+            Endereco endereco = dto.endereco();
             enderecoRepository.save(endereco);
 
             Cliente cliente = new Cliente();
-            cliente.setNome(dto.getNome());
-            cliente.setCPF(dto.getCpf());
-            cliente.setTelefone(dto.getTelefone());
+            cliente.setNome(dto.nome());
+            cliente.setCPF(dto.cpf());
+            cliente.setTelefone(dto.telefone());
             cliente.setEndereco(endereco);
             cliente.setAgencia(agencia);
 
-            List<ContaBancaria> contaBancarias = dto.getContas().stream().map(contaDTO -> {
+            List<ContaBancaria> contaBancarias = dto.contas().stream().map(contaDTO -> {
                 ContaBancaria contaBancaria = new ContaBancaria();
-                contaBancaria.setSaldo(contaDTO.getSaldo());
-                contaBancaria.setTipoConta(TipoConta.valueOf(contaDTO.getTipo()));
+                contaBancaria.setSaldo(contaDTO.saldo());
+                contaBancaria.setTipoConta(TipoConta.valueOf(contaDTO.tipo()));
                 contaBancaria.setCliente(cliente);
                 return contaBancaria;
             }).collect(Collectors.toList());
