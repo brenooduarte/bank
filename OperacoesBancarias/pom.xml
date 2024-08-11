@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.accenture.academico</groupId>
-	<artifactId>Clientes</artifactId>
+	<artifactId>OperacoesBancarias</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Clientes</name>
+	<name>Operacoes-Bancarias</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

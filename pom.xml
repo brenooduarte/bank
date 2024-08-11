@@ -22,8 +22,8 @@
 	</developers>
 	<modules>
 		<module>Clientes</module>
-		<module>Contas-Bancarias</module>
-		<module>Operacoes-Bancarias</module>
+		<module>ContasBancarias</module>
+		<module>OperacoesBancarias</module>
 		<module>Agencias</module>
 	</modules>
 	<scm>

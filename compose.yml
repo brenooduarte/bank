@@ -5,6 +5,7 @@ services:
     container_name: agencias_db
     environment:
       MYSQL_DATABASE: agencias_db
+      MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
@@ -16,6 +17,7 @@ services:
     container_name: contas_db
     environment:
       MYSQL_DATABASE: contas_db
+      MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
     ports:
       - "3307:3306"
@@ -27,6 +29,7 @@ services:
     container_name: operacoes_db
     environment:
       MYSQL_DATABASE: operacoes_db
+      MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
     ports:
       - "3308:3306"
@@ -38,6 +41,7 @@ services:
     container_name: clientes_db
     environment:
       MYSQL_DATABASE: clientes_db
+      MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
     ports:
       - "3309:3306"
