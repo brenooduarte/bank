@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "topicos.operacao.request.topic",
+      "type": "java.lang.String",
+      "description": "Description for topicos.operacao.request.topic."
+    },
+    {
+      "name": "topicos.validacao.cliente.request.topic",
+      "type": "java.lang.String",
+      "description": "Description for topicos.validacao.cliente.request.topic."
+    }
+  ] }

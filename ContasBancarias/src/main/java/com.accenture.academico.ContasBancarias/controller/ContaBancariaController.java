@@ -1,7 +1,9 @@
 package com.accenture.academico.ContasBancarias.controller;
 
 import com.accenture.academico.ContasBancarias.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.model.dto.form.ContaBancariaDTOForm;
 import com.accenture.academico.ContasBancarias.service.ContaBancariaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +19,8 @@ public class ContaBancariaController {
     ContaBancariaService contaBancariaService;
 
     @PostMapping
-    public ResponseEntity<Void> criarConta(@RequestBody MensagemOperacao mensagem) {
-        contaBancariaService.criarConta(mensagem);
+    public ResponseEntity<Void> criarConta(@Valid @RequestBody ContaBancariaDTOForm contaBancariaDTOForm) {
+        contaBancariaService.criarConta(contaBancariaDTOForm);
         return ResponseEntity.ok().build();
     }
 

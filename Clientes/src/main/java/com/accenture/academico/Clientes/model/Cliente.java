@@ -3,8 +3,6 @@ package com.accenture.academico.Clientes.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "tb_cliente")
@@ -25,12 +23,10 @@ public class Cliente {
     private String telefone;
 
     @OneToOne
-    @JoinColumn(name = "id_endereco", nullable = false)
+    @JoinColumn(name = "id_endereco")
     private Endereco endereco;
 
-    @ElementCollection
-    @CollectionTable(name = "tb_cliente_agencia", joinColumns = @JoinColumn(name = "id_cliente"))
     @Column(name = "id_agencia")
-    private List<Integer> agenciasIds;
+    private Integer idAgencia;
 
 }

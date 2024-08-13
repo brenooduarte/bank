@@ -1,6 +1,6 @@
-package com.accenture.academico.OperacoesBancarias.config;
+package com.accenture.academico.ContasBancarias.config;
 
-import com.accenture.academico.OperacoesBancarias.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.model.ResultadoValidacaoClienteEvent;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,17 +25,17 @@ public class KafkaConsumerConfig {
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "operacoes-group");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "resulados-validacoes-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, MensagemOperacao.class.getName());
+        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, ResultadoValidacaoClienteEvent.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return props;
     }
 
     @Bean
-    public ConsumerFactory<String, MensagemOperacao> consumerFactory() {
+    public ConsumerFactory<String, ResultadoValidacaoClienteEvent> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 

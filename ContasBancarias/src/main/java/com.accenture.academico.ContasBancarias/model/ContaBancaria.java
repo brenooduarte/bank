@@ -1,10 +1,13 @@
 package com.accenture.academico.ContasBancarias.model;
 
+import com.accenture.academico.ContasBancarias.model.enums.StatusConta;
 import com.accenture.academico.ContasBancarias.model.enums.TipoConta;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
+import java.text.DecimalFormat;
 
 @Data
 @Entity
@@ -31,4 +34,27 @@ public class ContaBancaria {
 
     @Column(name = "id_cliente", nullable = false)
     private Integer idCliente;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 15, nullable = false)
+    private StatusConta statusConta = StatusConta.PENDENTE;
+
+    private static final SecureRandom random = new SecureRandom();
+    private static final DecimalFormat numberFormat = new DecimalFormat("00000");
+
+    public ContaBancaria(BigDecimal saldo, TipoConta tipoConta, Integer idAgencia, Integer idCliente) {
+        this.saldo = saldo;
+        this.tipoConta = tipoConta;
+        this.idAgencia = idAgencia;
+        this.idCliente = idCliente;
+        this.numero = generateAccountNumber();
+        this.statusConta = StatusConta.PENDENTE;
+    }
+
+    public ContaBancaria() {}
+
+    private String generateAccountNumber() {
+        int randomNumber = random.nextInt(100_000);
+        return numberFormat.format(randomNumber);
+    }
 }

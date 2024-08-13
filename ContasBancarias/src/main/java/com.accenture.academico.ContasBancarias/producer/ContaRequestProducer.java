@@ -1,7 +1,7 @@
 package com.accenture.academico.ContasBancarias.producer;
 
 import com.accenture.academico.ContasBancarias.model.MensagemOperacao;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.accenture.academico.ContasBancarias.model.ValidacaoClienteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,15 +12,26 @@ public class ContaRequestProducer {
     @Value("${topicos.operacao.request.topic}")
     private String operacaoRequestTopic;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Value("${topicos.validacao.cliente.request.topic}")
+    private String validacaoClienteRequestTopic;
 
     @Autowired
-    private KafkaTemplate<String, MensagemOperacao> kafkaTemplate;
+    KafkaTemplate<String, MensagemOperacao> kafkaTemplateOperacao;
+
+    @Autowired
+    KafkaTemplate<String, ValidacaoClienteEvent> kafkaTemplateValidacaoCliente;
 
     public void enviarOperacao(MensagemOperacao mensagemOperacao) {
         try {
-            kafkaTemplate.send(operacaoRequestTopic, mensagemOperacao);
+            kafkaTemplateOperacao.send(operacaoRequestTopic, mensagemOperacao);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void enviarValidacaoCliente(ValidacaoClienteEvent eventoValidacao) {
+        try {
+            kafkaTemplateValidacaoCliente.send(validacaoClienteRequestTopic, eventoValidacao);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -2,10 +2,15 @@ package com.accenture.academico.ContasBancarias.service;
 
 import com.accenture.academico.ContasBancarias.model.ContaBancaria;
 import com.accenture.academico.ContasBancarias.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.model.ResultadoValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.model.ValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.model.dto.form.ContaBancariaDTOForm;
+import com.accenture.academico.ContasBancarias.model.enums.StatusConta;
 import com.accenture.academico.ContasBancarias.producer.ContaRequestProducer;
 import com.accenture.academico.ContasBancarias.repository.ContaBancariaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -75,6 +80,34 @@ public class ContaBancariaService {
         contaBancariaRepository.save(contaDestino);
 
         contaRequestProducer.enviarOperacao(mensagem);
+    }
+
+    @Transactional
+    public void criarConta(ContaBancariaDTOForm contaBancariaDTOForm) {
+        ContaBancaria novaConta = new ContaBancaria(
+                BigDecimal.ZERO,
+                contaBancariaDTOForm.tipoConta(),
+                contaBancariaDTOForm.idAgencia(),
+                contaBancariaDTOForm.idCliente()
+        );
+
+        ContaBancaria contaSalva = contaBancariaRepository.save(novaConta);
+
+        ValidacaoClienteEvent eventoValidacao = new ValidacaoClienteEvent(
+                contaSalva.getIdContaBancaria(),
+                contaBancariaDTOForm.idCliente()
+        );
+
+        contaRequestProducer.enviarValidacaoCliente(eventoValidacao);
+    }
+
+    public void atualizarStatusConta(Integer idContaBancaria, StatusConta statusConta) {
+        Optional<ContaBancaria> contaEncontrada = contaBancariaRepository.findById(idContaBancaria);
+        contaEncontrada.ifPresent(
+                contaBancaria -> contaBancaria.setStatusConta(statusConta)
+        );
+
+        contaBancariaRepository.save(contaEncontrada.get());
     }
 
 }
