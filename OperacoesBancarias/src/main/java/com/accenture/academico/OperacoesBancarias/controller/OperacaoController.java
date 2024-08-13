@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("extratos")
+@RequestMapping("operacoes")
 public class OperacaoController {
 
     @Autowired
@@ -23,4 +23,5 @@ public class OperacaoController {
         List<Operacao> operacoes = operacaoService.listarExtratoPorConta(id);
         return ResponseEntity.ok(operacoes);
     }
+
 }

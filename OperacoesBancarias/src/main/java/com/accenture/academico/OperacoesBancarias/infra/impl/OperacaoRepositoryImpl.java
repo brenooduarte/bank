@@ -23,7 +23,7 @@ public class OperacaoRepositoryImpl implements OperacaoRepositoryQuery {
         Root<Operacao> root = cq.from(Operacao.class);
 
         cq.where(
-                cb.equal(root.get("contaOrigem").get("idContaBancaria"), contaId)
+                cb.equal(root.get("idContaOrigem"), contaId)
         );
 
         return entityManager.createQuery(cq).getResultList();

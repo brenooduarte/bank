@@ -1,8 +1,10 @@
 package com.accenture.academico.ContasBancarias.service;
 
 import com.accenture.academico.ContasBancarias.model.ContaBancaria;
-import com.accenture.academico.ContasBancarias.model.dto.form.TransferenciaDTO;
+import com.accenture.academico.ContasBancarias.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.producer.ContaRequestProducer;
 import com.accenture.academico.ContasBancarias.repository.ContaBancariaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class ContaBancariaService {
     @Autowired
     ContaBancariaRepository contaBancariaRepository;
 
+    @Autowired
+    ContaRequestProducer contaRequestProducer;
+
     public Optional<ContaBancaria> buscarContaPorId(Integer id) {
         return contaBancariaRepository.findById(id);
     }
@@ -25,54 +30,51 @@ public class ContaBancariaService {
                 .orElse(BigDecimal.ZERO);
     }
 
-    public void realizarDeposito(Integer id, BigDecimal valor) {
-        ContaBancaria conta = buscarContaPorId(id)
-                .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+    @Transactional
+    public void solicitarDeposito(MensagemOperacao mensagem) {
+        ContaBancaria contaOrigem = contaBancariaRepository.findById(mensagem.idContaOrigem())
+                .orElseThrow(() -> new RuntimeException("Conta de destino não encontrada"));
 
-        conta.setSaldo(conta.getSaldo().add(valor));
-        contaBancariaRepository.save(conta);
+        contaOrigem.setSaldo(contaOrigem.getSaldo().add(mensagem.valor()));
+        contaBancariaRepository.save(contaOrigem);
 
-//        Operacao operacao = new Operacao(TipoOperacao.DEPOSITO, BigDecimal.ZERO, conta);
-//        operacaoRepository.save(operacao);
+        contaRequestProducer.enviarOperacao(mensagem);
     }
 
-    public void realizarSaque(Integer id, BigDecimal valor) {
-        ContaBancaria conta = buscarContaPorId(id)
-                .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
-        if (conta.getSaldo().compareTo(valor) < 0) {
-            throw new RuntimeException("Saldo insuficiente");
-        }
-        conta.setSaldo(conta.getSaldo().subtract(valor));
-        contaBancariaRepository.save(conta);
+    @Transactional
+    public void solicitarSaque(MensagemOperacao mensagem) {
+        ContaBancaria contaOrigem = contaBancariaRepository.findById(mensagem.idContaOrigem())
+                .orElseThrow(() -> new RuntimeException("Conta de origem não encontrada"));
 
-//        Operacao operacao = new Operacao(TipoOperacao.SAQUE, BigDecimal.ZERO, conta);
-//        operacaoRepository.save(operacao);
+        if (contaOrigem.getSaldo().compareTo(mensagem.valor()) < 0) {
+            throw new RuntimeException("Saldo insuficiente para saque");
+        }
+
+        contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(mensagem.valor()));
+        contaBancariaRepository.save(contaOrigem);
+
+        contaRequestProducer.enviarOperacao(mensagem);
     }
 
-    public void realizarTransferencia(TransferenciaDTO transferenciaDTO) {
-        ContaBancaria contaOrigem = buscarContaPorId(transferenciaDTO.contaOrigemId())
-                .orElseThrow(() -> new RuntimeException("Conta origem não encontrada"));
-        ContaBancaria contaDestino = buscarContaPorId(transferenciaDTO.contaDestinoId())
-                .orElseThrow(() -> new RuntimeException("Conta destino não encontrada"));
+    @Transactional
+    public void solicitarTransferencia(MensagemOperacao mensagem) {
+        ContaBancaria contaOrigem = contaBancariaRepository.findById(mensagem.idContaOrigem())
+                .orElseThrow(() -> new RuntimeException("Conta de origem não encontrada"));
 
-        if (contaOrigem.getSaldo().compareTo(transferenciaDTO.valor()) < 0) {
-            throw new RuntimeException("Saldo insuficiente");
+        ContaBancaria contaDestino = contaBancariaRepository.findById(mensagem.idContaDestino())
+                .orElseThrow(() -> new RuntimeException("Conta de destino não encontrada"));
+
+        if (contaOrigem.getSaldo().compareTo(mensagem.valor()) < 0) {
+            throw new RuntimeException("Saldo insuficiente para transferência");
         }
 
-        contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(transferenciaDTO.valor()));
-        contaDestino.setSaldo(contaDestino.getSaldo().add(transferenciaDTO.valor()));
+        contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(mensagem.valor()));
+        contaDestino.setSaldo(contaDestino.getSaldo().add(mensagem.valor()));
 
         contaBancariaRepository.save(contaOrigem);
         contaBancariaRepository.save(contaDestino);
 
-//        Operacao operacao = new Operacao(TipoOperacao.TRANSFERENCIA, BigDecimal.ZERO, contaOrigem);
-//        operacaoRepository.save(operacao);
-//
-//        Transferencia transferencia = new Transferencia(operacao, contaDestino);
-//        transferenciaRepository.save(transferencia);
+        contaRequestProducer.enviarOperacao(mensagem);
     }
 
-//    public List<ContaBancaria> buscarContasPorCliente(Integer clienteId) {
-//        return contaBancariaRepository.findByClienteId(clienteId);
-//    }
 }

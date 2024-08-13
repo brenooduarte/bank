@@ -32,4 +32,5 @@ public class Cliente {
     @CollectionTable(name = "tb_cliente_agencia", joinColumns = @JoinColumn(name = "id_cliente"))
     @Column(name = "id_agencia")
     private List<Integer> agenciasIds;
+
 }

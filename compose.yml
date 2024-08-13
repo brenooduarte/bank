@@ -1,17 +1,24 @@
 version: '3.8'
 services:
-  agencias_db:
-    image: mysql:8.0
-    container_name: agencias_db
-    environment:
-      MYSQL_DATABASE: agencias_db
-      MYSQL_USERNAME: root
-      MYSQL_PASSWORD: root
-    ports:
-      - "3306:3306"
-    volumes:
-      - agencias_data:/var/lib/mysql
 
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.9
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: 'bitnami/kafka:3.4'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+
+#  bancos de dados
   contas_db:
     image: mysql:8.0
     container_name: contas_db
@@ -47,6 +54,18 @@ services:
       - "3309:3306"
     volumes:
       - clientes_data:/var/lib/mysql
+
+  agencias_db:
+    image: mysql:8.0
+    container_name: agencias_db
+    environment:
+      MYSQL_DATABASE: agencias_db
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3310:3306"
+    volumes:
+      - agencias_data:/var/lib/mysql
 
 volumes:
   agencias_data:
