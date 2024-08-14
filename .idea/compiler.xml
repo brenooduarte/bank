@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ContasBancarias" />
+        <module name="OperacoesBancarias" />
+        <module name="Agencias" />
+        <module name="Clientes" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="accentureacademico" target="1.8" />
+      <module name="cliente" target="17" />
+      <module name="untitled" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Agencias" options="-parameters" />
+      <module name="Clientes" options="-parameters" />
+      <module name="ContasBancarias" options="-parameters" />
+      <module name="OperacoesBancarias" options="-parameters" />
+      <module name="accentureacademico" options="-parameters" />
+      <module name="bank" options="" />
+      <module name="cliente" options="-parameters" />
+      <module name="untitled" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -18,6 +20,12 @@ public class ClienteController {
         return clienteService.buscarClientePorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> listarTodosOsClientes() {
+        List<Cliente> clientes = clienteService.listarTodosOsClientes();
+        return ResponseEntity.ok(clientes);
     }
 
     @PostMapping

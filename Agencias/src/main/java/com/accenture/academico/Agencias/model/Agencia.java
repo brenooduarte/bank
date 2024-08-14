@@ -2,7 +2,6 @@ package com.accenture.academico.Agencias.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.math.BigDecimal;
 
 @Data
 @Entity

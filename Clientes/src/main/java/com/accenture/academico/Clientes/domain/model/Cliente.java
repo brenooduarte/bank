@@ -3,6 +3,8 @@ package com.accenture.academico.Clientes.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 @Entity
 @Table(name = "tb_cliente")
@@ -25,11 +27,12 @@ public class Cliente {
     @Column(length = 20, nullable = false)
     private String telefone;
 
-    @OneToOne
-    @JoinColumn(name = "id_endereco")
-    private Endereco endereco;
-
     @Column(name = "id_agencia")
     private Integer idAgencia;
+
+
+//    private Integer codigoConta;
+
+//    private Integer codigoAgencia;
 
 }
