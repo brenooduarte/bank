@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
@@ -14,6 +15,16 @@ public class ClienteController {
 
     @Autowired
     ClienteService clienteService;
+
+    @GetMapping("/validar")
+    public ResponseEntity<?> validarCliente(@RequestParam String cpf, @RequestParam String senha) {
+        Optional<Cliente> cliente = clienteService.validarCliente(cpf, senha);
+        if (cliente.isPresent()) {
+            return ResponseEntity.ok(cliente.get());
+        } else {
+            return ResponseEntity.status(401).body("CPF ou senha incorretos.");
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Integer id) {

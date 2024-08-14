@@ -19,6 +19,7 @@ public class Agencia {
     @Column(length = 15, nullable = false)
     private String telefone;
 
-    @Column(name = "id_endereco", nullable = false)
-    private Integer idEndereco;
+    @OneToOne
+    @JoinColumn(name = "id_endereco", nullable = false)
+    private Endereco endereco;
 }

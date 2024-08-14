@@ -42,4 +42,7 @@ public class ClienteService {
         }).orElse(false);
     }
 
+    public Optional<Cliente> validarCliente(String cpf, String senha) {
+        return clienteRepository.findByCpfAndSenha(cpf, senha);
+    }
 }
