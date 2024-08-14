@@ -1,7 +1,7 @@
 package com.accenture.academico.ContasBancarias.mensageria.config;
 
-import com.accenture.academico.ContasBancarias.domain.model.MensagemOperacao;
-import com.accenture.academico.ContasBancarias.domain.model.ValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.mensageria.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.mensageria.model.ValidacaoClienteEvent;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

@@ -20,9 +20,6 @@ public class Agencia {
     @Column(length = 15, nullable = false)
     private String telefone;
 
-    @Column(name = "taxa_juros", precision = 5, scale = 2, nullable = false)
-    private BigDecimal taxaJuros;
-
     @Column(name = "id_endereco", nullable = false)
     private Integer idEndereco;
 }

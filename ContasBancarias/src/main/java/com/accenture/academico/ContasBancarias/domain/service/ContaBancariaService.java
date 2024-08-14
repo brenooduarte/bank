@@ -1,17 +1,21 @@
 package com.accenture.academico.ContasBancarias.domain.service;
 
 import com.accenture.academico.ContasBancarias.domain.enums.StatusConta;
+import com.accenture.academico.ContasBancarias.domain.enums.TipoConta;
 import com.accenture.academico.ContasBancarias.domain.model.dto.form.ContaBancariaDTOForm;
 import com.accenture.academico.ContasBancarias.domain.repository.ContaBancariaRepository;
 import com.accenture.academico.ContasBancarias.domain.model.ContaBancaria;
-import com.accenture.academico.ContasBancarias.domain.model.MensagemOperacao;
-import com.accenture.academico.ContasBancarias.domain.model.ValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.mensageria.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.mensageria.model.ValidacaoClienteEvent;
 import com.accenture.academico.ContasBancarias.mensageria.producer.ContaRequestProducer;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,8 +27,12 @@ public class ContaBancariaService {
     @Autowired
     ContaRequestProducer contaRequestProducer;
 
-    public Optional<ContaBancaria> buscarContaPorId(Integer id) {
-        return contaBancariaRepository.findById(id);
+    public List<ContaBancaria> listarContasPorClienteId(Integer idCliente) {
+        return contaBancariaRepository.findByIdCliente(idCliente);
+    }
+
+    public Optional<ContaBancaria> buscarContaPorId(Integer idConta) {
+        return contaBancariaRepository.findById(idConta);
     }
 
     public BigDecimal consultarSaldo(Integer id) {
@@ -86,6 +94,7 @@ public class ContaBancariaService {
                 BigDecimal.ZERO,
                 contaBancariaDTOForm.tipoConta(),
                 contaBancariaDTOForm.idAgencia(),
+                contaBancariaDTOForm.taxaJuros(),
                 contaBancariaDTOForm.idCliente()
         );
 
@@ -107,6 +116,30 @@ public class ContaBancariaService {
         );
 
         contaBancariaRepository.save(contaEncontrada.get());
+    }
+
+    // Método para adicionar juros
+    public void aplicarJuros() {
+        List<ContaBancaria> contas = contaBancariaRepository.findAll();
+        LocalDate hoje = LocalDate.now();
+
+        for (ContaBancaria conta : contas) {
+            if (conta.getTipoConta() == TipoConta.POUPANCA) {
+                LocalDate dataDeposito = conta.getDataDeposito();
+                long diasDesdeDeposito = ChronoUnit.DAYS.between(dataDeposito, hoje);
+
+                if (diasDesdeDeposito >= 30) {
+                    BigDecimal saldoAtual = conta.getSaldo();
+                    BigDecimal taxaJuros = conta.getTaxaJuros();
+
+                    BigDecimal juros = saldoAtual.multiply(taxaJuros);
+                    conta.setSaldo(saldoAtual.add(juros));
+                    conta.setDataDeposito(hoje);
+
+                    contaBancariaRepository.save(conta);
+                }
+            }
+        }
     }
 
 }

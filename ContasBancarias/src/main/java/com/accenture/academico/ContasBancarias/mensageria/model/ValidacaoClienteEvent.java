@@ -1,4 +1,4 @@
-package com.accenture.academico.ContasBancarias.domain.model;
+package com.accenture.academico.ContasBancarias.mensageria.model;
 
 public record ValidacaoClienteEvent(
         Integer idContaBancaria,

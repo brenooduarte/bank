@@ -1,7 +1,7 @@
 package com.accenture.academico.ContasBancarias.mensageria.producer;
 
-import com.accenture.academico.ContasBancarias.domain.model.MensagemOperacao;
-import com.accenture.academico.ContasBancarias.domain.model.ValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.mensageria.model.MensagemOperacao;
+import com.accenture.academico.ContasBancarias.mensageria.model.ValidacaoClienteEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;

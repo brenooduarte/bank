@@ -16,6 +16,9 @@ public class Cliente {
     @Column(length = 45, nullable = false)
     private String nome;
 
+    @Column(length = 20, nullable = false)
+    private String senha;
+
     @Column(name = "cpf", length = 20, nullable = false)
     private String CPF;
 

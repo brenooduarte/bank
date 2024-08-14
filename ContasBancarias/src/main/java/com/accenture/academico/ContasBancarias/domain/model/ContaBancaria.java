@@ -8,6 +8,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -39,16 +40,24 @@ public class ContaBancaria {
     @Column(length = 15, nullable = false)
     private StatusConta statusConta = StatusConta.PENDENTE;
 
+    @Column(name = "taxa_juros", precision = 5, scale = 2, nullable = false)
+    private BigDecimal taxaJuros;
+
+    @Column(name = "data_deposito")
+    private LocalDate dataDeposito;
+
     private static final SecureRandom random = new SecureRandom();
     private static final DecimalFormat numberFormat = new DecimalFormat("00000");
 
-    public ContaBancaria(BigDecimal saldo, TipoConta tipoConta, Integer idAgencia, Integer idCliente) {
+    public ContaBancaria(BigDecimal saldo, TipoConta tipoConta, Integer idAgencia, BigDecimal taxaJuros, Integer idCliente) {
         this.saldo = saldo;
         this.tipoConta = tipoConta;
         this.idAgencia = idAgencia;
         this.idCliente = idCliente;
+        this.taxaJuros = tipoConta.equals(TipoConta.POUPANCA) ? taxaJuros : BigDecimal.ZERO;
         this.numero = generateAccountNumber();
         this.statusConta = StatusConta.PENDENTE;
+        this.dataDeposito = LocalDate.now();
     }
 
     public ContaBancaria() {}

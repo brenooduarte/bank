@@ -1,6 +1,6 @@
 package com.accenture.academico.ContasBancarias.mensageria.consumer;
 
-import com.accenture.academico.ContasBancarias.domain.model.ResultadoValidacaoClienteEvent;
+import com.accenture.academico.ContasBancarias.mensageria.model.ResultadoValidacaoClienteEvent;
 import com.accenture.academico.ContasBancarias.domain.service.ContaBancariaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -26,24 +26,29 @@ public class Operacao {
     @Column(name = "taxa_operacao", precision = 5, scale = 2, nullable = false)
     private BigDecimal taxaOperacao;
 
+    @Column(precision = 5, scale = 2, nullable = false)
+    private BigDecimal valor;
+
     @Column(name = "id_conta_origem", nullable = false)
     private Integer idContaOrigem;
 
     @Column(name = "id_conta_destino")
     private Integer idContaDestino;
 
-    public Operacao(TipoOperacao tipoOperacao, BigDecimal taxaOperacao, Integer idContaOrigem, Integer idContaDestino) {
+    public Operacao(TipoOperacao tipoOperacao, BigDecimal taxaOperacao, BigDecimal valor, Integer idContaOrigem, Integer idContaDestino) {
         this.dataHoraMovimento = LocalDateTime.now();
         this.tipoOperacao = tipoOperacao;
         this.taxaOperacao = taxaOperacao;
+        this.valor = valor;
         this.idContaOrigem = idContaOrigem;
         this.idContaDestino = idContaDestino;
     }
 
-    public Operacao(TipoOperacao tipoOperacao, BigDecimal taxaOperacao, Integer idContaOrigem) {
+    public Operacao(TipoOperacao tipoOperacao, BigDecimal taxaOperacao, BigDecimal valor, Integer idContaOrigem) {
         this.dataHoraMovimento = LocalDateTime.now();
         this.tipoOperacao = tipoOperacao;
         this.taxaOperacao = taxaOperacao;
+        this.valor = valor;
         this.idContaOrigem = idContaOrigem;
     }
 

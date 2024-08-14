@@ -21,17 +21,17 @@ public class OperacaoService {
     }
 
     public void realizarDeposito(MensagemOperacao mensagem) {
-        Operacao operacao = new Operacao(TipoOperacao.DEPOSITO, BigDecimal.ZERO, mensagem.idContaOrigem());
+        Operacao operacao = new Operacao(TipoOperacao.DEPOSITO, BigDecimal.ZERO, mensagem.valor(), mensagem.idContaOrigem());
         operacaoRepository.save(operacao);
     }
 
     public void realizarSaque(MensagemOperacao mensagem) {
-        Operacao operacao = new Operacao(TipoOperacao.SAQUE, BigDecimal.ZERO, mensagem.idContaOrigem());
+        Operacao operacao = new Operacao(TipoOperacao.SAQUE, BigDecimal.ZERO, mensagem.valor(), mensagem.idContaOrigem());
         operacaoRepository.save(operacao);
     }
 
     public void realizarTransferencia(MensagemOperacao mensagem) {
-        Operacao operacao = new Operacao(TipoOperacao.TRANSFERENCIA, BigDecimal.ZERO, mensagem.idContaOrigem(), mensagem.idContaDestino());
+        Operacao operacao = new Operacao(TipoOperacao.TRANSFERENCIA, BigDecimal.ZERO, mensagem.valor(), mensagem.idContaOrigem(), mensagem.idContaDestino());
         operacaoRepository.save(operacao);
     }
 
